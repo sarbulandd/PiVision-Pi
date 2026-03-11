@@ -1,0 +1,18 @@
+[
+  {
+    "event_id": "evt_20260311-202852",
+    "timestamp": "2026-03-11T20:29:08.958048",
+    "snapshot_path": "/home/pi/SecurityMonitor-Pi/data/captures/snapshots/intruder_20260311-202852.jpg",
+    "video_path": "/home/pi/SecurityMonitor-Pi/data/captures/videos/intruder_20260311-202852.mp4",
+    "face_detected": false,
+    "recognised_person": null
+  },
+  {
+    "event_id": "evt_20260311-202921",
+    "timestamp": "2026-03-11T20:29:37.951585",
+    "snapshot_path": "/home/pi/SecurityMonitor-Pi/data/captures/snapshots/intruder_20260311-202921.jpg",
+    "video_path": "/home/pi/SecurityMonitor-Pi/data/captures/videos/intruder_20260311-202921.mp4",
+    "face_detected": false,
+    "recognised_person": null
+  }
+]

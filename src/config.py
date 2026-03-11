@@ -1,18 +1,26 @@
 from pathlib import Path
 
-# Base paths
 BASE_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = BASE_DIR / "data"
-CAPTURE_DIR = DATA_DIR / "captures"
+
+CAPTURES_DIR = DATA_DIR / "captures"
+SNAPSHOTS_DIR = CAPTURES_DIR / "snapshots"
+VIDEOS_DIR = CAPTURES_DIR / "videos"
+EVENTS_DIR = DATA_DIR / "events"
+
 LOG_DIR = BASE_DIR / "logs"
 
-# Ensure folders exist (in case script is run standalone)
-for p in (DATA_DIR, CAPTURE_DIR, LOG_DIR):
+# Create directories automatically
+for p in (DATA_DIR, CAPTURES_DIR, SNAPSHOTS_DIR, VIDEOS_DIR, EVENTS_DIR, LOG_DIR):
     p.mkdir(parents=True, exist_ok=True)
 
-# Camera settings
-CAMERA_RESOLUTION = (1280, 720) 
-CAMERA_FRAMERATE = 30
+# PIR settings
+PIR_GPIO_PIN = 17
+WARMUP_SECONDS = 30
 
-# How long to preview before auto-capturing (seconds)
-PREVIEW_DURATION = 10
+# Recording settings
+VIDEO_DURATION = 10
+COOLDOWN_SECONDS = 5
+
+# System settings
+DEFAULT_ARMED = True
