@@ -32,3 +32,16 @@ class EventService:
             json.dump(events, f, indent=2)
 
         return event
+
+    def delete_event(self, event_id: str) -> bool:
+        events = self.get_events()
+        filtered = [e for e in events if e["event_id"] != event_id]
+        if len(filtered) == len(events):
+            return False
+        with open(self.events_file, "w") as f:
+            json.dump(filtered, f, indent=2)
+        return True
+
+    def clear_events(self) -> None:
+        with open(self.events_file, "w") as f:
+            json.dump([], f)
