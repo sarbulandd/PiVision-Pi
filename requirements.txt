@@ -2,3 +2,5 @@ picamera2
 flask
 flask-cors
 azure-storage-blob
+face_recognition
+opencv-python-headless
