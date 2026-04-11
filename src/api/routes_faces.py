@@ -5,10 +5,16 @@ from flask import Blueprint, jsonify, request
 
 from src.camera.snapshot_service import SnapshotService
 from src.services.face_db_service import FaceDatabaseService
+from src.services.upload_service import UploadService
 
 faces_bp = Blueprint("faces", __name__)
 face_db = FaceDatabaseService()
 snapshot_service = SnapshotService()
+
+try:
+    upload_service = UploadService()
+except EnvironmentError:
+    upload_service = None
 
 
 @faces_bp.route("/faces", methods=["GET"])
@@ -32,6 +38,10 @@ def add_face():
         result = face_db.add_face(name, tmp_path)
         if result is None:
             return jsonify({"error": "no face detected in image"}), 422
+        if upload_service:
+            image_url = upload_service.upload_face_image(tmp_path, result["id"])
+            face_db.update_image_url(result["id"], image_url)
+            result["image_url"] = image_url
         return jsonify(result), 201
     finally:
         tmp_path.unlink(missing_ok=True)
@@ -51,6 +61,10 @@ def capture_face():
         result = face_db.add_face(name, tmp_path)
         if result is None:
             return jsonify({"error": "no face detected in image"}), 422
+        if upload_service and result:
+            image_url = upload_service.upload_face_image(tmp_path, result["id"])
+            face_db.update_image_url(result["id"], image_url)
+            result["image_url"] = image_url
         return jsonify(result), 201
     finally:
         tmp_path.unlink(missing_ok=True)

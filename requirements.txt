@@ -4,3 +4,7 @@ flask-cors
 azure-storage-blob
 face_recognition
 opencv-python-headless
+firebase-admin
+requests
+waitress
+psutil

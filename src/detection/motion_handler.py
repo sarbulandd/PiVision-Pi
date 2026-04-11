@@ -8,6 +8,7 @@ from src.config import COOLDOWN_SECONDS, VIDEO_DURATION, VIDEO_FRAME_INTERVAL
 from src.detection.face_detection import FaceDetectionService
 from src.services.arm_service import ArmService
 from src.services.event_service import EventService
+from src.services.notification_service import NotificationService
 from src.services.storage_service import StorageService
 from src.services.upload_service import UploadService
 
@@ -28,6 +29,12 @@ class MotionHandler:
             print("AZURE_STORAGE_CONNECTION_STRING not set — uploads disabled.")
             self.upload_service = None
 
+        try:
+            self.notification_service = NotificationService()
+        except FileNotFoundError:
+            print("serviceAccountKey.json not found — push notifications disabled.")
+            self.notification_service = None
+
     def handle_motion(self) -> None:
         if self.busy:
             return
@@ -40,6 +47,9 @@ class MotionHandler:
         timestamp = self.storage_service.generate_timestamp()
         snapshot_path = self.storage_service.build_snapshot_path(timestamp)
         video_path = self.storage_service.build_video_path(timestamp)
+
+        from src.api.routes_stream import pause_stream
+        stream_was_active = pause_stream()
 
         try:
             print(f"\nMotion detected @ {timestamp}")
@@ -75,6 +85,13 @@ class MotionHandler:
 
             print(f"Event created: {event['event_id']}")
 
+            if self.notification_service:
+                self.notification_service.send_alert(
+                    event_id=event["event_id"],
+                    face_detected=face_detected,
+                    recognised_person=recognised_person
+                )
+
             if not face_detected:
                 threading.Thread(
                     target=self._scan_video_background,
@@ -91,6 +108,10 @@ class MotionHandler:
             time.sleep(COOLDOWN_SECONDS)
             self.busy = False
             print("Re-armed. Waiting for motion...")
+            if stream_was_active:
+                from src.api.routes_stream import start_stream
+                start_stream()
+                print("Stream resumed.")
 
     def _scan_video_background(self, video_path: Path, event_id: str) -> None:
         try:

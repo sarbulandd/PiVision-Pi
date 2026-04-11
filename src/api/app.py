@@ -15,11 +15,15 @@ def create_app():
     from src.api.routes_control import control_bp
     from src.api.routes_events import events_bp
     from src.api.routes_faces import faces_bp
+    from src.api.routes_stream import stream_bp
+    from src.api.routes_health import health_bp
 
     app.register_blueprint(status_bp)
     app.register_blueprint(control_bp)
     app.register_blueprint(events_bp)
     app.register_blueprint(faces_bp)
+    app.register_blueprint(stream_bp)
+    app.register_blueprint(health_bp)
 
     return app
 

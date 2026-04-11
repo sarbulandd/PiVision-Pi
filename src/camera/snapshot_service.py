@@ -5,7 +5,7 @@ from pathlib import Path
 class SnapshotService:
     def capture(self, output_path: Path) -> Path:
         result = subprocess.run(
-            ["rpicam-jpeg", "-o", str(output_path)],
+            ["rpicam-jpeg", "--width", "1920", "--height", "1080", "-o", str(output_path)],
             capture_output=True,
             text=True
         )

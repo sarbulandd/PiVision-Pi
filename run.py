@@ -9,8 +9,9 @@ from src.sensors.pir_sensor import PIRSensorService
 
 
 def run_flask():
+    from waitress import serve
     app = create_app()
-    app.run(host="0.0.0.0", port=5000)
+    serve(app, host="0.0.0.0", port=5000)
 
 
 def run_motion_loop():
