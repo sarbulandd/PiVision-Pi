@@ -8,6 +8,9 @@ class VideoService:
             [
                 "rpicam-vid",
                 "--width", "1920", "--height", "1080",
+                "--denoise", "cdn_fast",
+                "--metering", "average",
+                "--ev", "0.5",
                 "-t", str(duration * 1000),
                 "-o", str(output_path)
             ],

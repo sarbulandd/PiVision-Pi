@@ -1,0 +1,13 @@
+[Unit]
+Description=PiVision ngrok Tunnel
+After=network-online.target pivision.service
+Wants=network-online.target
+
+[Service]
+User=pi
+ExecStart=/usr/local/bin/ngrok http --url=admissible-journey-stylitic.ngrok-free.dev 5000
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

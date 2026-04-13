@@ -1,0 +1,15 @@
+[Unit]
+Description=PiVision Security Monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/SecurityMonitor-Pi
+EnvironmentFile=/home/pi/SecurityMonitor-Pi/.env
+ExecStart=/home/pi/SecurityMonitor-Pi/venv/bin/python run.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
